@@ -1,0 +1,205 @@
+type User {
+    emailid: ID
+    first_name: String
+    last_name: String
+    phone_number: String
+    timestamp: String
+}
+
+input InputUser {
+    emailid: ID
+    first_name: String
+    last_name: String
+    phone_number: String
+    timestamp: String
+}
+
+type City {
+    city_id: ID
+    city_name: String
+}
+
+input InputCity {
+    city_id: ID
+    city_name: String
+}
+
+type Province {
+    province_id: ID
+    province_name: String
+}
+
+input InputProvince {
+    province_id: ID
+    province_name: String
+}
+
+type Country {
+    country_id: ID
+    country_name: String
+    country_code: String
+}
+
+input InputCountry {
+    country_id: ID
+    country_name: String
+    country_code: String
+}
+
+type Address {
+    address_id: ID
+    user_email: User
+    first_line: String
+    second_line: String
+    third_line: String
+    city_id: City
+    province_id: Province
+    country_id: Country
+}
+
+input InputAddress {
+    address_id: ID
+    user_email: String
+    first_line: String
+    second_line: String
+    third_line: String
+    city_id: Int
+    province_id: Int
+    country_id: Int
+}
+
+type Status {
+    status_id: ID
+    status: String
+}
+
+input InputStatus {
+    status_id: ID
+    status: String
+}
+
+type Book {
+    book_id: ID
+    book_name: String
+    isbn: String
+    author_name: String
+    timestamp: String
+}
+
+input InputBook {
+    book_id: ID
+    book_name: String
+    isbn: String
+    author_name: String
+    timestamp: String
+}
+
+type UserSellsBook {
+    selling_id: ID
+    user_email: String
+    book_id: String
+    status: Int
+    price: String
+    timestamp: String
+}
+
+input InputUserSellsBook {
+    selling_id: ID
+    user_email: String
+    book_id: String
+    status: Int
+    price: String
+    timestamp: String
+}
+
+type Query {
+    """
+    Info: To give the information about the api 
+    """
+    info: String
+
+    """
+    getUserById(id: ID): This takes an emailid as input to find details of 
+    that particular user
+    """
+    getUserById(id: ID): User
+    
+    """
+    getAllUsers: This will give all the available users
+    """
+    getAllUsers: [User]
+
+    """
+    getAllCities: This will give all the available cities
+    """
+    getAllCities: [City]
+
+    """
+    getAllProvinces: This will give all the available Provinces
+    """
+    getAllProvinces: [Province]
+
+    """
+    getAllCountries: This will give all the available Countries
+    """
+    getAllCountries: [Country]
+    
+    """
+
+    """
+    getAllBooks: [Book]
+
+    """
+
+    """
+    searchBook(input: String): [Book]
+
+    """
+
+    """
+    getAllBookTransactions: [UserSellsBook]
+
+    getBookTransactionsByBook(input: String): [UserSellsBook]
+
+    getBookTransactionsByUser(input: String): [UserSellsBook]
+
+
+
+}
+
+type Mutation {
+    """
+    createNewUser(input: InputUser): This will take input a user object and create a new user in the database
+    """
+    createNewUser(input: InputUser): User
+    
+    """
+    createNewCity(input: InputCity): This will take input a user object and create a new city in the database
+    """
+    createNewCity(input: InputCity): City
+
+    """
+    createNewProvince(input: InputProvince): This will take input a user object and create a new Province in the database
+    """
+    createNewProvince(input: InputProvince): Province
+    
+    """
+    createNewCountry(input: InputCountry): This will take input a user object and create a new country in the database
+    """
+    createNewCountry(input: InputCountry): Country
+    
+    """
+    createNewAddress(input: InputAddress): This will take input a user object and create a new address in the database
+    """
+    createNewAddress(input: InputAddress): Address
+
+    """
+    createNewBook(input: InputBook): this will take input a book object and create a new book in the database
+    """
+    createNewBook(input: InputBook): Book
+
+    """
+
+    """
+    createNewUserSellsBook(input: InputUserSellsBook): UserSellsBook
+}

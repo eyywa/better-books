@@ -1,0 +1,92 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = "mysql://eywa:Ivenomsarthak@localhost:3306/books_api"
+}
+
+model user {
+  first_name      String            @db.VarChar(13)
+  last_name       String            @db.VarChar(13)
+  phone_number    String?           @db.Char(10)
+  emailid         String            @id @db.VarChar(50)
+  timestamp       DateTime?         @default(now()) @db.DateTime(0)
+  address         address[]
+  user_sells_book user_sells_book[]
+}
+
+model address {
+  address_id  String   @id @db.Char(12)
+  user_email  String   @db.VarChar(50)
+  first_line  String?  @db.VarChar(10)
+  second_line String?  @db.VarChar(50)
+  third_line  String?  @db.VarChar(50)
+  city_id     Int
+  province_id Int
+  country_id  Int
+  city        city     @relation(fields: [city_id], references: [city_id])
+  country     country  @relation(fields: [country_id], references: [country_id])
+  province    province @relation(fields: [province_id], references: [province_id])
+  user        user     @relation(fields: [user_email], references: [emailid])
+
+  @@index([city_id], name: "city_id")
+  @@index([country_id], name: "country_id")
+  @@index([province_id], name: "province_id")
+  @@index([user_email], name: "user_email")
+}
+
+model book {
+  book_id         String            @id @db.Char(12)
+  book_name       String            @db.VarChar(100)
+  isbn            String            @unique @db.VarChar(13)
+  author_name     String            @db.VarChar(100) @default("")
+  timestamp       DateTime?         @default(now()) @db.DateTime(0)
+  user_sells_book user_sells_book[]
+}
+
+model city {
+  city_id   Int       @id @default(autoincrement())
+  city_name String    @db.VarChar(28) @unique
+  address   address[]
+}
+
+model country {
+  country_id   Int       @id @default(autoincrement())
+  country_name String    @db.VarChar(30)  @unique
+  country_code String?   @db.VarChar(5) @unique
+  address      address[]
+}
+
+model province {
+  province_id   Int       @id @default(autoincrement())
+  province_name String    @db.VarChar(20) @unique
+  address       address[]
+}
+
+model status {
+  status_id       Int               @id
+  status          String            @db.VarChar(7)
+  user_sells_book user_sells_book[]
+}
+
+model user_sells_book {
+  selling_id                     String    @id @db.Char(13)
+  user_email                     String    @db.VarChar(50)
+  book_id                        String    @db.Char(12)
+  status                         Int
+  price                          String    @db.VarChar(5)
+  timestamp                      DateTime? @default(now()) @db.DateTime(0)
+  book                           book      @relation(fields: [book_id], references: [book_id])
+  status_statusTouser_sells_book status    @relation(fields: [status], references: [status_id])
+  user                           user      @relation(fields: [user_email], references: [emailid])
+
+  @@index([book_id], name: "book_id")
+  @@index([status], name: "status")
+  @@index([user_email], name: "user_email")
+}
+
+
+//TODO: Connect country with province and province with city. So when user select country only the province of that 
+//      country will be displayed and when he chooses the province he shall only be displayed the cities of that province.
